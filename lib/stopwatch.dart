@@ -12,8 +12,6 @@ enum StopWatchState {
 const buttonStyle = TextStyle(fontSize: 40);
 
 class StopWatchSection extends StatefulWidget {
-  const StopWatchSection();
-
   @override
   State<StopWatchSection> createState() => _StopWatchSectionState();
 }
@@ -26,16 +24,38 @@ class _StopWatchSectionState extends State<StopWatchSection> {
     final child = () {
       switch (stopWatchState) {
         case StopWatchState.start:
-          return Center(
-            child: ElevatedButton(
-              child: const Text(
-                "Let's start working",
-                style: buttonStyle,
+          return Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  children: const [
+                    Tooltip(message: "Concours dans X jours !", child: Icon(Icons.calendar_month)),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          "Bonjour ! 😀",
+                          style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              onPressed: () => setState(() {
-                stopWatchState = StopWatchState.selectParam;
-              }),
-            ),
+              Expanded(
+                child: Center(
+                  child: ElevatedButton(
+                    child: const Text(
+                      "Let's start working",
+                      style: buttonStyle,
+                    ),
+                    onPressed: () => setState(() {
+                      stopWatchState = StopWatchState.selectParam;
+                    }),
+                  ),
+                ),
+              ),
+            ],
           );
         case StopWatchState.selectParam:
           return _SelectParam(
@@ -143,14 +163,16 @@ class _SelectParamState extends State<_SelectParam> {
           ),
         ),
         Expanded(
-            child: ElevatedButton(
-          child: Text("Go", style: buttonStyle),
-          onPressed: (selectedCategory != null && selectedSubject != null) ? widget.goToRunningState : null,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.selected)) return Colors.blueAccent;
-              if (states.contains(MaterialState.disabled)) return Colors.blueAccent.withOpacity(0.5);
-            }),
+            child: Center(
+          child: ElevatedButton(
+            onPressed: (selectedCategory != null && selectedSubject != null) ? widget.goToRunningState : null,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith((states) {
+                if (states.contains(MaterialState.disabled)) return Colors.blueAccent.withOpacity(0.5);
+                return Colors.blueAccent;
+              }),
+            ),
+            child: const Text("Go", style: buttonStyle),
           ),
         ))
       ],
@@ -191,8 +213,7 @@ class _RunningState extends State<_Running> {
             style: TextStyle(fontSize: 40),
           ),
           const Expanded(child: SizedBox.shrink()),
-          if (startTime != null)
-            Text(formatDuration(startTime), style: const TextStyle(fontSize: 60, fontWeight: FontWeight.bold)),
+          Text(formatDuration(startTime), style: const TextStyle(fontSize: 60, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
