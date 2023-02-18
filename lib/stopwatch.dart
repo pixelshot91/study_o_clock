@@ -21,67 +21,41 @@ class _StopWatchSectionState extends State<StopWatchSection> {
 
   @override
   Widget build(BuildContext context) {
-    final child = () {
-      switch (stopWatchState) {
-        case StopWatchState.start:
-          return Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  children: const [
-                    Tooltip(message: "Concours dans X jours !", child: Icon(Icons.calendar_month)),
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          "Bonjour ! 😀",
-                          style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+    switch (stopWatchState) {
+      case StopWatchState.start:
+        return Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Bonjour ! 😀",
+                style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),
               ),
-              Expanded(
-                child: Center(
-                  child: ElevatedButton(
-                    child: const Text(
-                      "Let's start working",
-                      style: buttonStyle,
-                    ),
-                    onPressed: () => setState(() {
-                      stopWatchState = StopWatchState.selectParam;
-                    }),
-                  ),
-                ),
-              ),
-            ],
-          );
-        case StopWatchState.selectParam:
-          return _SelectParam(
-            goToRunningState: () => setState(() {
-              stopWatchState = StopWatchState.running;
-            }),
-          );
-        case StopWatchState.running:
-          return const _Running();
-      }
-    }();
-
-    return Scaffold(
-      body: Stack(
-        children: [
-          SizedBox.expand(
-            child: Image.asset(
-              "assets/images/moving_castle_meadow.webp",
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
             ),
-          ),
-          child,
-        ],
-      ),
-    );
+            Expanded(
+              child: Center(
+                child: ElevatedButton(
+                  child: const Text(
+                    "Let's start working",
+                    style: buttonStyle,
+                  ),
+                  onPressed: () => setState(() {
+                    stopWatchState = StopWatchState.selectParam;
+                  }),
+                ),
+              ),
+            ),
+          ],
+        );
+      case StopWatchState.selectParam:
+        return _SelectParam(
+          goToRunningState: () => setState(() {
+            stopWatchState = StopWatchState.running;
+          }),
+        );
+      case StopWatchState.running:
+        return const _Running();
+    }
   }
 }
 
