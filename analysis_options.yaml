@@ -1,6 +1,8 @@
 include: package:lints/recommended.yaml
 
 analyzer:
+  plugins:
+    - dart_code_metrics
   language:
     strict-casts: true
     strict-inference: true
@@ -11,4 +13,21 @@ analyzer:
     body_might_complete_normally: error
     missing_return: error
     depend_on_referenced_packages: error
+
+dart_code_metrics:
+  rules:
+    - avoid-dynamic
+    - avoid-redundant-async
+    - avoid-passing-async-when-sync-expected
+    - avoid-redundant-async
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - avoid-unrelated-type-assertions
+    - avoid-unused-parameters
+    - avoid-nested-conditional-expressions
+    - no-boolean-literal-compare
+    - no-empty-block
+    - prefer-conditional-expressions
+    - no-equal-then-else
+    - prefer-moving-to-variable
 

@@ -54,7 +54,7 @@ class _StopWatchSectionState extends State<StopWatchSection> {
           }),
         );
       case StopWatchState.running:
-        return const _Running();
+        return _Running(selectParam: () => setState(() => stopWatchState = StopWatchState.selectParam));
     }
   }
 }
@@ -155,7 +155,9 @@ class _SelectParamState extends State<_SelectParam> {
 }
 
 class _Running extends StatefulWidget {
-  const _Running({Key? key}) : super(key: key);
+  const _Running({required this.selectParam});
+
+  final void Function() selectParam;
 
   @override
   State<_Running> createState() => _RunningState();
@@ -163,11 +165,19 @@ class _Running extends StatefulWidget {
 
 class _RunningState extends State<_Running> {
   DateTime _startTime = DateTime.now();
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(seconds: 1), (timer) => setState(() {}));
+    // ignore: no-empty-block
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -208,7 +218,7 @@ class _RunningState extends State<_Running> {
                   style: buttonStyle,
                 ),
                 onPressed: () => setState(() {
-                  _startTime = DateTime.now();
+                  widget.selectParam();
                 }),
               )
             ],
